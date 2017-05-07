@@ -1,8 +1,3 @@
-if exists('g:autoload_nvimterm')
-	finish
-endif
-let g:autoload_nvimterm = 1
-
 let s:enter_insert = get(g:, 'nvimterm#enter_insert', 1)
 let s:enable_keymap = get(g:, 'nvimterm#enable_keymap', 1)
 

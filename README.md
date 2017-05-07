@@ -2,6 +2,12 @@ nvim-term
 ==
 Make neovim's `:terminal` useful.
 
+Installation
+--
+```
+call dein#add('deresmos/nvim-term', {'merged': 0})
+```
+
 
 Setting
 --
