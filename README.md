@@ -4,8 +4,11 @@ Make neovim's `:terminal` useful.
 
 Installation
 --
+* To install using dein:
 ```
-call dein#add('deresmos/nvim-term', {'merged': 0})
+[[plugins]]
+repo = 'deresmos/nvim-term'
+if = '''has('nvim')'''
 ```
 
 
