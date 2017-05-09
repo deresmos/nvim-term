@@ -1,5 +1,8 @@
 let s:enter_insert = get(g:, 'nvimterm#enter_insert', 1)
 let s:enable_keymap = get(g:, 'nvimterm#enable_keymap', 1)
+let s:toggle_tname = get(g:, 'nvimterm#toggle_tname', 'NVIM_TERM')
+let s:toggle_tname = 'term://' . s:toggle_tname
+let s:toggle_size = get(g:, 'nvimterm#toggle_size', 15)
 
 function! s:create_buffer(count, newtype) "{{{1
 	let l:newtype = ['new', 'vnew', 'tabnew', 'enew']
@@ -46,6 +49,40 @@ function! nvimterm#delete_buffers(all) "{{{1
 	let single = 'term deleted'
 	let multi = 'term deleted'
 	echomsg delete_count delete_count <= 1 ? single : multi
+endfunction
+
+function! s:closeWinTerm() "{{{1
+	for n in range(1, winnr('$'))
+		let buffer_type = getwinvar(n, '&buftype')
+		if buffer_type ==# 'terminal'
+			exe n . 'wincmd w'
+			q
+			return 0
+		endif
+	endfor
+	return 1
+endfunction
+
+function! nvimterm#toggle(count) "{{{1
+	if s:closeWinTerm() == 0
+		return 0
+	endif
+
+	let term_size = a:count ? a:count : s:toggle_size
+
+	for n in range(1, bufnr('$'))
+		let buffer_name = bufname(n)
+		if buffer_name ==# s:toggle_tname
+			exe 'silent!' term_size 'new' s:toggle_tname
+			startinsert
+			return 0
+		endif
+	endfor
+
+	call nvimterm#open('', term_size, 0)
+	stopinsert
+	exe 'silent! keepalt file' s:toggle_tname
+	startinsert
 endfunction
 " }}}1 END functions
 
