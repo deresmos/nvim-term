@@ -10,3 +10,4 @@ command! -nargs=* NTerm call nvimterm#open(<q-args>, 0, 3)
 
 command! -nargs=0 NTermDeletes call nvimterm#delete_buffers(0)
 command! -nargs=0 NTermDeleteAll call nvimterm#delete_buffers(1)
+command! -nargs=0 -count NTermToggle call nvimterm#toggle(<count>)
