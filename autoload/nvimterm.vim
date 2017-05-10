@@ -3,6 +3,13 @@ let s:enable_keymap = get(g:, 'nvimterm#enable_keymap', 1)
 let s:toggle_tname = get(g:, 'nvimterm#toggle_tname', 'NVIM_TERM')
 let s:toggle_tname = 'term://' . s:toggle_tname
 let s:toggle_size = get(g:, 'nvimterm#toggle_size', 15)
+let s:source_dir = get(g:, 'nvimterm#source_dir', '')
+let s:source_name = get(g:, 'nvimterm#source_name', '.nvimtermrc')
+
+let s:open_source_command = ''
+if s:source_dir == '' && executable('nvr')
+	let s:open_source_command = 'source ' . expand('<sfile>:p:h') . '/' . s:source_name
+endif
 
 function! s:create_buffer(count, newtype) "{{{1
 	let l:newtype = ['new', 'vnew', 'tabnew', 'enew']
@@ -28,7 +35,14 @@ endfunction
 function! nvimterm#open(args, count, newtype) " {{{1
 	call s:create_buffer(a:count, a:newtype)
 
-	exe 'terminal' a:args
+	let id = termopen(&sh)
+	if s:open_source_command != ''
+		call jobsend(id, s:open_source_command . "\<C-m>\<C-l>")
+	endif
+	if a:args != ''
+		call jobsend(id, a:args . "\<C-m>")
+	endif
+	startinsert
 	call s:set_keymap()
 endfunction
 
