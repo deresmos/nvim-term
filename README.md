@@ -2,6 +2,7 @@ nvim-term
 ==
 Make neovim's `:terminal` useful.
 
+
 Installation
 --
 * To install using dein:
@@ -14,19 +15,29 @@ if = '''has('nvim')'''
 
 Setting
 --
-* Enter terminal, set insert mode. (default 1)
+* Enter terminal, set insert mode. *Default 1*
 ```
 let g:nvimterm#enter_insert = 1
 ```
 
-* Set buffer name of toggle terminal. (default NVIM_TERM)
+* Set buffer name of toggle terminal. *Default NVIM_TERM*
 ```
 let g:nvimterm#toggle_tname = 'NVIM_TERM'
 ```
 
-* Set window size of toggle terminal. (default 15)
+* Set window size of toggle terminal. *Default 15*
 ```
 let g:nvimterm#toggle_size = 15
+```
+
+* Set source directory. *Default script directory* (Run source command, Before open terminal)
+```
+let g:nvimterm#source_dir = '~/'
+```
+
+* Set source file name. *Default .nvimtermrc*
+```
+let g:nvimterm#source_name = '.nvimtermrc'
 ```
 
 

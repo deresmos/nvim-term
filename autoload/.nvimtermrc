@@ -1,0 +1,7 @@
+alias nvim='nvr'
+alias nvimt='nvr -cc tabnew'
+alias nvims='nvr -cc split'
+alias nvimv='nvr -cc vsplit'
+alias nvimT='nvr -cc close && nvr -cc tabnew'
+alias nvimS='nvr -cc close && nvr -cc split'
+alias nvimV='nvr -cc close && nvr -cc vsplit'
