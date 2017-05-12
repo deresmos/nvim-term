@@ -5,6 +5,7 @@ let s:toggle_tname = 'term://' . s:toggle_tname
 let s:toggle_size = get(g:, 'nvimterm#toggle_size', 15)
 let s:source_dir = get(g:, 'nvimterm#source_dir', '')
 let s:source_name = get(g:, 'nvimterm#source_name', '.nvimtermrc')
+let s:term_ft = get(g:, 'nvimterm#term_filetype', 'nvim-term')
 
 let s:open_source_command = ''
 if s:source_dir == '' && executable('nvr')
@@ -32,8 +33,11 @@ function! s:set_keymap() "{{{1
 	nnoremap <buffer> <C-q> :bdelete!<CR>
 endfunction
 
-function! nvimterm#open(args, count, newtype) " {{{1
+function! nvimterm#open(args, count, newtype, ...) " {{{1
 	call s:create_buffer(a:count, a:newtype)
+
+	let ft = get(a:, '1', s:term_ft)
+	exe 'setfiletype' ft
 
 	let id = termopen(&sh)
 	if s:open_source_command != ''
@@ -61,14 +65,14 @@ function! nvimterm#delete_buffers(all) "{{{1
 	endfor
 
 	let single = 'term deleted'
-	let multi = 'term deleted'
+	let multi = 'terms deleted'
 	echomsg delete_count delete_count <= 1 ? single : multi
 endfunction
 
-function! s:closeWinTerm() "{{{1
+function! s:closeWinTerm(filetype) "{{{1
 	for n in range(1, winnr('$'))
-		let buffer_type = getwinvar(n, '&buftype')
-		if buffer_type ==# 'terminal'
+		let l:filetype = getwinvar(n, '&filetype')
+		if l:filetype ==# a:filetype
 			exe n . 'wincmd w'
 			q
 			return 0
@@ -78,7 +82,8 @@ function! s:closeWinTerm() "{{{1
 endfunction
 
 function! nvimterm#toggle(count) "{{{1
-	if s:closeWinTerm() == 0
+	let ft = s:term_ft . '-t'
+	if s:closeWinTerm(ft) == 0
 		return 0
 	endif
 
@@ -93,7 +98,7 @@ function! nvimterm#toggle(count) "{{{1
 		endif
 	endfor
 
-	call nvimterm#open('', term_size, 0)
+	call nvimterm#open('', term_size, 0, ft)
 	stopinsert
 	exe 'silent! keepalt file' s:toggle_tname
 	startinsert
