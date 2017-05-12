@@ -40,6 +40,11 @@ let g:nvimterm#source_dir = '~/'
 let g:nvimterm#source_name = '.nvimtermrc'
 ```
 
+* Set nvim terminal filetype. *Default nvim-term*
+```
+let g:nvimterm#term_filetype = 'nvim-term'
+```
+
 
 Usage
 --
