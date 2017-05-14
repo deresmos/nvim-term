@@ -16,7 +16,7 @@ function! s:create_buffer(count, newtype) "{{{1
 	let l:newtype = ['new', 'vnew', 'tabnew', 'enew']
 	let cmd = l:newtype[a:newtype]
 	let cmd = a:count ? a:count . cmd : cmd
-	exe cmd
+	execute cmd
 endfunction
 
 function! s:set_autocmd() "{{{1
@@ -30,14 +30,16 @@ function! s:set_autocmd() "{{{1
 endfunction
 
 function! s:set_keymap() "{{{1
-	nnoremap <buffer> <C-q> :bdelete!<CR>
+	if s:enable_keymap == 1
+		nnoremap <buffer> <C-q> :bdelete!<CR>
+	endif
 endfunction
 
 function! nvimterm#open(args, count, newtype, ...) " {{{1
 	call s:create_buffer(a:count, a:newtype)
 
 	let ft = get(a:, '1', s:term_ft)
-	exe 'setfiletype' ft
+	execute 'setfiletype' ft
 
 	let id = termopen(&sh)
 	if s:open_source_command != ''
@@ -58,7 +60,7 @@ function! nvimterm#delete_buffers(all) "{{{1
 	for n in range(1, lastbuffer)
 		if buffer != n && buflisted(n)
 			if bufname(n) =~ 'term://*'
-				silent exe 'bdelete! ' . n
+				silent execute 'bdelete! ' . n
 				let delete_count += 1
 			endif
 		endif
@@ -73,7 +75,7 @@ function! s:closeWinTerm(filetype) "{{{1
 	for n in range(1, winnr('$'))
 		let l:filetype = getwinvar(n, '&filetype')
 		if l:filetype ==# a:filetype
-			exe n . 'wincmd w'
+			execute n . 'wincmd w'
 			q
 			return 0
 		endif
@@ -81,7 +83,7 @@ function! s:closeWinTerm(filetype) "{{{1
 	return 1
 endfunction
 
-function! nvimterm#toggle(count) "{{{1
+function! nvimterm#toggle(args, count) "{{{1
 	let ft = s:term_ft . '-t'
 	if s:closeWinTerm(ft) == 0
 		return 0
@@ -92,15 +94,15 @@ function! nvimterm#toggle(count) "{{{1
 	for n in range(1, bufnr('$'))
 		let buffer_name = bufname(n)
 		if buffer_name ==# s:toggle_tname
-			exe 'silent!' term_size 'new' s:toggle_tname
+			execute 'silent!' term_size 'new' s:toggle_tname
 			startinsert
 			return 0
 		endif
 	endfor
 
-	call nvimterm#open('', term_size, 0, ft)
+	call nvimterm#open(a:args, term_size, 0, ft)
 	stopinsert
-	exe 'silent! keepalt file' s:toggle_tname
+	execute 'silent! keepalt file' s:toggle_tname
 	startinsert
 endfunction
 " }}}1 END functions
