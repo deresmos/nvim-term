@@ -32,6 +32,10 @@ endfunction
 function! s:set_keymap() "{{{1
 	if s:enable_keymap == 1
 		nnoremap <buffer> <C-q> :bdelete!<CR>
+		nnoremap <buffer> I i<C-a>
+		nnoremap <buffer> A a<C-e>
+		nnoremap <buffer> dd i<C-e><C-u><C-\><C-n>
+		nnoremap <buffer> cc i<C-e><C-u>
 	endif
 endfunction
 
