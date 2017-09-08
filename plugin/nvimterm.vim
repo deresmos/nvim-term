@@ -11,3 +11,5 @@ command! -nargs=* -count NTermToggle call nvimterm#toggle(<q-args>, <count>)
 
 command! -nargs=0 NTermDeletes call nvimterm#delete_buffers(0)
 command! -nargs=0 NTermDeleteAll call nvimterm#delete_buffers(1)
+
+command! -nargs=0 NTermAutocmd call nvimterm#set_autocmd()

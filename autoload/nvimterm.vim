@@ -19,13 +19,14 @@ function! s:create_buffer(count, newtype) "{{{1
 	execute l:cmd
 endfunction
 
-function! s:set_autocmd() "{{{1
+function! nvimterm#set_autocmd() "{{{1
 	augroup nvimterminal
 		autocmd!
 
 		if s:enter_insert == 1
 			autocmd BufEnter term://* startinsert
 		endif
+    autocmd BufEnter term://* call nvimterm#check_source()
 	augroup END
 endfunction
 
@@ -48,12 +49,28 @@ function! nvimterm#open(args, count, newtype, ...) " {{{1
 	let l:id = termopen(&shell)
 	if s:open_source_command !=# ''
 		call jobsend(l:id, s:open_source_command . "\<C-m>\<C-l>")
+    let b:is_run_nvimterm_source = 1
 	endif
 	if a:args !=# ''
 		call jobsend(l:id, a:args . "\<C-m>")
 	endif
 	startinsert
 	call s:set_keymap()
+endfunction
+
+function! s:run_source(job_id) "{{{1
+  let l:job_id = get(a:, 'job_id', b:terminal_job_id)
+  if s:open_source_command !=# ''
+    call jobsend(l:job_id, s:open_source_command . "\<C-m>\<C-l>")
+    let b:is_run_nvimterm_source = 1
+  endif
+endfunction
+
+function! nvimterm#check_source() "{{{1
+  let l:is_run_source = get(l:, 'is_run_nvimterm_source', 0)
+  if l:is_run_source == 0
+    call s:run_source()
+  endif
 endfunction
 
 function! nvimterm#delete_buffers(all) "{{{1
@@ -111,4 +128,4 @@ function! nvimterm#toggle(args, count) "{{{1
 endfunction
 " }}}1 END functions
 
-call s:set_autocmd()
+call nvimterm#set_autocmd()
