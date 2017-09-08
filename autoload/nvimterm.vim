@@ -54,10 +54,7 @@ function! nvimterm#open(args, count, newtype, ...) " {{{1
   execute 'setfiletype' l:ft
 
   let l:id = termopen(&shell)
-  if s:open_source_command !=# ''
-    call jobsend(l:id, s:open_source_command . "\<C-m>\<C-l>")
-    let b:is_run_nvimterm_source = 1
-  endif
+  call s:run_source(l:id)
   if a:args !=# ''
     call jobsend(l:id, a:args . "\<C-m>")
   endif
