@@ -30,14 +30,9 @@ Setting
   let g:nvimterm#toggle_size = 15
   ```
 
-* Set source directory. *Default script directory* (Run source command, Before open terminal)
+* Set source path. *Default script directory* (Run source command, Before open terminal)
   ```
-  let g:nvimterm#source_dir = '~/'
-  ```
-
-* Set source file name. *Default .nvimtermrc*
-  ```
-  let g:nvimterm#source_name = '.nvimtermrc'
+  let g:nvimterm#source_path = '~/.nvimtermrc'
   ```
 
 * Set nvim terminal filetype. *Default nvim-term*
