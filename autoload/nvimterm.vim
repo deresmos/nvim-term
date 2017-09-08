@@ -59,17 +59,16 @@ function! nvimterm#open(args, count, newtype, ...) " {{{1
 endfunction
 
 function! s:run_source(job_id) "{{{1
-  let l:job_id = get(a:, 'job_id', b:terminal_job_id)
   if s:open_source_command !=# ''
-    call jobsend(l:job_id, s:open_source_command . "\<C-m>\<C-l>")
+    call jobsend(a:job_id, s:open_source_command . "\<C-m>\<C-l>")
     let b:is_run_nvimterm_source = 1
   endif
 endfunction
 
 function! nvimterm#check_source() "{{{1
-  let l:is_run_source = get(l:, 'is_run_nvimterm_source', 0)
+  let l:is_run_source = get(b:, 'is_run_nvimterm_source', 0)
   if l:is_run_source == 0
-    call s:run_source()
+    call s:run_source(b:terminal_job_id)
   endif
 endfunction
 
