@@ -1,5 +1,5 @@
-if exists('g:loaded_nvimterm') 
-	finish
+if exists('g:loaded_nvimterm')
+  finish
 endif
 let g:loaded_nvimterm = 1
 
