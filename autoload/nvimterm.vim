@@ -54,25 +54,26 @@ function! nvimterm#open(args, count, newtype, ...) " {{{1
   execute 'setfiletype' l:ft
 
   let l:id = termopen(&shell)
-  call s:run_source(l:id)
+  call s:init_term(l:id)
   if a:args !=# ''
     call jobsend(l:id, a:args . "\<C-m>")
   endif
   startinsert
-  call s:set_keymap()
 endfunction
 
-function! s:run_source(job_id) "{{{1
+function! s:init_term(job_id) "{{{1
   if s:open_source_command !=# ''
     call jobsend(a:job_id, s:open_source_command . "\<C-m>\<C-l>")
-    let b:is_run_nvimterm_source = 1
   endif
+
+  call s:set_keymap()
+  let b:is_init_term = 1
 endfunction
 
 function! nvimterm#check_source() "{{{1
-  let l:is_run_source = get(b:, 'is_run_nvimterm_source', 0)
-  if l:is_run_source == 0
-    call s:run_source(b:terminal_job_id)
+  let l:is_init_term = get(b:, 'is_init_term', 0)
+  if l:is_init_term == 0
+    call s:init_term(b:terminal_job_id)
   endif
 endfunction
 
