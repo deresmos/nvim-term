@@ -1,5 +1,4 @@
 let s:enter_insert = get(g:, 'nvimterm#enter_insert', 1)
-let s:enable_keymap = get(g:, 'nvimterm#enable_keymap', 1)
 let s:toggle_tname = get(g:, 'nvimterm#toggle_tname', 'NVIM_TERM')
 let s:toggle_tname = 'term://' . s:toggle_tname
 let s:toggle_size = get(g:, 'nvimterm#toggle_size', 15)
@@ -37,16 +36,6 @@ function! nvimterm#set_autocmd() "{{{1
   augroup END
 endfunction
 
-function! s:set_keymap() "{{{1
-  if s:enable_keymap == 1
-    nnoremap <buffer> <C-q> :bdelete!<CR>
-    nnoremap <buffer> I i<C-a>
-    nnoremap <buffer> A a<C-e>
-    nnoremap <buffer> dd i<C-e><C-u><C-\><C-n>
-    nnoremap <buffer> cc i<C-e><C-u>
-  endif
-endfunction
-
 function! nvimterm#open(args, count, newtype, ...) " {{{1
   call s:create_buffer(a:count, a:newtype)
 
@@ -66,7 +55,6 @@ function! s:init_term(job_id) "{{{1
     call jobsend(a:job_id, s:open_source_command . "\<C-m>\<C-l>")
   endif
 
-  call s:set_keymap()
   let b:is_init_term = 1
 endfunction
 
