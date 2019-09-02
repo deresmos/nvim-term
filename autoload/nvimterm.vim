@@ -2,20 +2,12 @@ let s:enter_insert = get(g:, 'nvimterm#enter_insert', 1)
 let s:toggle_tname = get(g:, 'nvimterm#toggle_tname', 'NVIM_TERM')
 let s:toggle_tname = 'term://' . s:toggle_tname
 let s:toggle_size = get(g:, 'nvimterm#toggle_size', 15)
-let s:source_dir = get(g:, 'nvimterm#source_dir', '')
-let s:source_name = get(g:, 'nvimterm#source_name', '.nvimtermrc')
 let s:source_path = get(g:, 'nvimterm#source_path', '')
 let s:term_ft = get(g:, 'nvimterm#term_filetype', 'nvim-term')
 
 let s:open_source_command = ''
-if s:source_dir ==# '' && executable('nvr')
-  let s:open_source_command = 'source ' . expand('<sfile>:p:h') . '/' . s:source_name
-endif
-
 if s:source_path !=# ''
   let s:open_source_command = 'source ' . s:source_path
-elseif executable('nvr')
-  let s:open_source_command = 'source ' . expand('<sfile>:p:h') . '/.nvimtermrc'
 endif
 
 function! s:create_buffer(count, newtype) "{{{1
